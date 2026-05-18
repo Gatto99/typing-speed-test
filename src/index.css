@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+:root {
+  --bg-color: #1e2022;
+
+  --text: #75727a;
+  --text-red: #c12740;
+  --text-green: #42bf6d;
+  --text-max-contrast: #fff;
+
+  --accent-border: rgb(46 135 186);
+  --accent: #2e87ba;
+
+  --accent-warning: #da9d42;
+
+  --border: #afafaf;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: clamp(5px, 5vw, 22px) var(--sans);
+  letter-spacing: 1px;
+  color-scheme: light dark;
+  color: var(--text);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-color: #f3ede6;
+    --border: #75727a;
+    --text-max-contrast: #000000;
+  }
+}
+
+#root {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: var(--bg-color);
+}
+
+body {
+  margin: 0;
+  padding: 20px 0;
+}
+
+button {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+button.selected {
+ border: 1px solid var(--accent-border);
+  color: var(--accent);
+}
+
+button:hover {
+  background-color: var(--accent-border);
+  color: white;
+}

@@ -1,4 +1,8 @@
+import {useUserStats} from "../stores/stats.ts";
+
 export function Header() {
+    const bestWpm = useUserStats((state) => state.bestWpm);
+
     return (
         <header className={"flex w-full justify-between"}>
             <div>
@@ -7,7 +11,7 @@ export function Header() {
             <div className={"flex space-x-1"}>
                 <img src="../assets/icon-personal-best.svg" alt="personal-best" />
                 <span>Personal best: </span>
-                <span>92 WPM</span>
+                <span>{bestWpm} WPM</span>
             </div>
         </header>
     )

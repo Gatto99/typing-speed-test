@@ -19,6 +19,11 @@ export function TextBlock() {
     const setTotalCorrectChars = useUserStats((state) => state.setTotalCorrectChars);
     const setAccuracy = useUserStats((state) => state.setAccuracy);
 
+    const timer = useTestState((state) => state.timer);
+    const reduceTimer = useTestState((state) => state.reduceTimer);
+    const resetTimer = useTestState((state) => state.resetTimer);
+    const timerId = useRef<number>(-1);
+
     const text = useTestState((state) => state.text);
     const setText = useTestState((state) => state.setText);
     const textChars = useMemo<string[]>(() => {
@@ -104,6 +109,31 @@ export function TextBlock() {
             totalCorrectChars.current = 0;
         }
     }, [testStatus]);
+
+    useEffect(() => {
+        switch (testStatus) {
+            case TestStatus.TO_START:
+                resetTimer();
+                break;
+            case TestStatus.IN_PROGRESS:
+                timerId.current = setInterval(() => {
+                    reduceTimer()
+                }, 1000);
+                return () => {
+                    clearInterval(timerId.current)
+                }
+            case TestStatus.FINISHED:
+                clearInterval(timerId.current);
+                break;
+            default:
+                break;
+        }
+    }, [testStatus, totalCorrectChars, timer]);
+
+    useEffect(() => {
+        if(timer === 0)
+            clearInterval(timerId.current);
+    }, [timer]);
 
     useEffect(() => {
         if(currentCharIndex === textChars.length) {

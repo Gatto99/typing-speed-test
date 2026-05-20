@@ -1,19 +1,12 @@
-import {
-    Difficulty,
-    Mode,
-    TestStatus,
-    useTestState,
-    useUserStats
-} from "../stores/stats.ts";
-import {useEffect, useRef, useState} from "react";
+import {Difficulty, Mode, TestStatus, useTestState, useUserStats} from "../stores/stats.ts";
+import {useEffect} from "react";
 import {calculateWPM} from "../utils/utils.ts";
 
 export function Stats() {
     const testStatus = useTestState((state) => state.testStatus);
 
     // Timer
-    const timerId = useRef<number>(-1);
-    const [timer, setTimer] = useState(60);
+    const timer = useTestState((state) => state.timer);
     const minutes = Math.floor(timer / 60);
     const seconds = Math.floor(timer % 60) < 10 ? '0' + Math.floor(timer % 60) : Math.floor(timer % 60);
 
@@ -36,32 +29,20 @@ export function Stats() {
     useEffect(() => {
         switch (testStatus) {
             case TestStatus.TO_START:
-                setTimer(60);
                 resetStats();
                 break;
             case TestStatus.IN_PROGRESS:
                 if(timer < 60) {
                     setWpm(calculateWPM(totalCorrectChars, 60 - timer));
                 }
-                timerId.current = setInterval(() => {
-                    setTimer((state) => state - 1)
-                }, 1000);
-                return () => {
-                    clearInterval(timerId.current)
-                }
+                break;
             case TestStatus.FINISHED:
-                clearInterval(timerId.current);
                 updateBestWmp();
                 break;
             default:
                 break;
         }
     }, [testStatus, totalCorrectChars, timer]);
-
-    useEffect(() => {
-        if(timer === 0)
-            clearInterval(timerId.current)
-    }, [timer]);
 
     return (
         <section className={"flex justify-between"}>

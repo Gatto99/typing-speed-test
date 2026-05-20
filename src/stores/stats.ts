@@ -44,8 +44,11 @@ export enum TestStatus {
 export type TestState = {
     testStatus: TestStatus,
     text: string,
+    timer: number,
     setTestStatus: (newStatus: TestStatus) => void,
     setText: (newText: string) => void,
+    reduceTimer: () => void,
+    resetTimer: () => void
 }
 
 export const useTestState = create<TestState & UserDifficultyState & UserModeState>((set) => ({
@@ -55,6 +58,12 @@ export const useTestState = create<TestState & UserDifficultyState & UserModeSta
     // Testo
     text: "",
     setText: (newText: string) => set({text: newText}),
+    // Timer
+    timer: 60,
+    reduceTimer: () => set((state) => {
+        return {timer: state.timer - 1}
+    }),
+    resetTimer: () => set({timer: 60}),
     // Difficoltà
     difficulty: Difficulty.Easy,
     setDifficulty: (newDifficulty: Difficulty) => set({difficulty: newDifficulty}),

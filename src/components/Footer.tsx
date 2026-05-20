@@ -1,4 +1,4 @@
-import {TestStatus, useTestState} from "../stores/stats.ts";
+import {TestStatus, useTestState} from "../stores/test.ts";
 
 export function Footer() {
     const setTestStatus = useTestState((state) => state.setTestStatus);
